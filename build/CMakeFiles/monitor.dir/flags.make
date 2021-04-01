@@ -6,5 +6,5 @@ CXX_FLAGS =   -Wall -Wextra -std=gnu++17
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/rbenzi/Documents/C++/Udacity-Course/Project_2/CppND-System-Monitor/include 
+CXX_INCLUDES = -I/home/rbenzi/Documents/C++/Udacity-Course/Project_2/SimilarHtop/include 
 

@@ -8,6 +8,7 @@
 #include "format.h"
 #include "ncurses_display.h"
 #include "system.h"
+#include "linux_parser.h"
 
 using std::string;
 using std::to_string;
@@ -78,16 +79,28 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
   mvwprintw(window, row, time_column, "TIME+");
   mvwprintw(window, row, command_column, "COMMAND");
   wattroff(window, COLOR_PAIR(2));
-  for (int i = 0; i < n; ++i) {
-    mvwprintw(window, ++row, pid_column, to_string(processes[i].Pid()).c_str());
-    mvwprintw(window, row, user_column, processes[i].User().c_str());
-    float cpu = processes[i].CpuUtilization() * 100;
+  // for (int i = 0; i < n; ++i) {
+  //   mvwprintw(window, ++row, pid_column, to_string(processes[i].Pid()).c_str());
+  //   mvwprintw(window, row, user_column, processes[i].User().c_str());
+  //   float cpu = processes[i].CpuUtilization() * 100;
+  //   mvwprintw(window, row, cpu_column, to_string(cpu).substr(0, 4).c_str());
+  //   mvwprintw(window, row, ram_column, processes[i].Ram().c_str());
+  //   mvwprintw(window, row, time_column,
+  //             Format::ElapsedTime(processes[i].UpTime()).c_str());
+  //   mvwprintw(window, row, command_column,
+  //             processes[i].Command().substr(0, window->_maxx - 46).c_str());
+  // }
+
+  for (auto process : processes) {
+    mvwprintw(window, ++row, pid_column, to_string(process.Pid()).c_str());
+    mvwprintw(window, row, user_column, process.User().c_str());
+    float cpu = process.CpuUtilization() * 100;
     mvwprintw(window, row, cpu_column, to_string(cpu).substr(0, 4).c_str());
-    mvwprintw(window, row, ram_column, processes[i].Ram().c_str());
+    mvwprintw(window, row, ram_column, process.Ram().c_str());
     mvwprintw(window, row, time_column,
-              Format::ElapsedTime(processes[i].UpTime()).c_str());
+              Format::ElapsedTime(process.UpTime()).c_str());
     mvwprintw(window, row, command_column,
-              processes[i].Command().substr(0, window->_maxx - 46).c_str());
+              process.Command().substr(0, window->_maxx - 46).c_str());
   }
 }
 
@@ -96,6 +109,9 @@ void NCursesDisplay::Display(System& system, int n) {
   noecho();       // do not print input values
   cbreak();       // terminate ncurses on ctrl + c
   start_color();  // enable color
+  // std::cout << n << std::endl;
+  // std::cout << system.Processes().size() << std::endl;
+
 
   int x_max{getmaxx(stdscr)};
   WINDOW* system_window = newwin(12, x_max - 1, 0, 0);

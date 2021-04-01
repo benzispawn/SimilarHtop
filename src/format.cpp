@@ -17,3 +17,11 @@ string Format::ElapsedTime(long time) {
     int second = time % MIN;
     return std::to_string(hour) + ":" + std::to_string(minute) + ":" + std::to_string(second);
 }
+
+// string Format::prd(const double x, const int decDigits) {
+//     std::stringstream ss = "";
+//     ss << fixed;
+//     ss.precision(decDigits); // set # places after decimal
+//     ss << x;
+//     return ss.str();
+// }

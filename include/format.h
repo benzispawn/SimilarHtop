@@ -4,7 +4,8 @@
 #include <string>
 
 namespace Format {
-std::string ElapsedTime(long times);  // TODO: See src/format.cpp
+    std::string ElapsedTime(long times);  // TODO: See src/format.cpp
+    //string Format::prd(const double x, const int decDigits);
 };                                    // namespace Format
 
 #endif

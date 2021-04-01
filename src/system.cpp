@@ -22,14 +22,6 @@ using std::vector;
 // TODO: Return the system's CPU
 //Processor& System::Cpu() { return cpu_; }
 
-// std::ifstream& GotoLine(std::ifstream& file, unsigned int num){
-//     file.seekg(std::ios::beg);
-//     for(int i=0; i < num - 1; ++i){
-//         file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-//     }
-//     return file;
-// }
-
 std::vector<Processor>& System::Cpus() {
     std::string key, user, nice, system, 
                 idle, iowait, irq, softirq, 
@@ -56,8 +48,19 @@ std::vector<Processor>& System::Cpus() {
 
 // TODO: Return a container composed of the system's processes
 vector<Process>& System::Processes() { 
-    // vector<int> processes_ = LinuxParser::Pids();
-    return processes_; 
+
+    this->processes_.clear();
+    std::vector<int> pids = LinuxParser::Pids();
+
+    for (int pid : pids) {
+        // std::cout << pid << std::endl;
+        Process tmp_process(pid);
+        this->processes_.push_back(tmp_process);
+    }    
+
+    std::sort(processes_.begin(), processes_.end());
+
+    return this->processes_; 
 }
 
 // TODO: Return the system's kernel identifier (string)
