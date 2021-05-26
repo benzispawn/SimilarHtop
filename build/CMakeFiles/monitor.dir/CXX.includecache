@@ -47,6 +47,14 @@ processor.h
 /home/rbenzi/Documents/C++/Udacity-Course/Project_2/SimilarHtop/src/format.cpp
 string
 -
+chrono
+-
+ctime
+-
+iomanip
+-
+sstream
+-
 format.h
 /home/rbenzi/Documents/C++/Udacity-Course/Project_2/SimilarHtop/src/format.h
 
@@ -114,6 +122,8 @@ string
 vector
 -
 unistd.h
+-
+iomanip
 -
 process.h
 /home/rbenzi/Documents/C++/Udacity-Course/Project_2/SimilarHtop/src/process.h

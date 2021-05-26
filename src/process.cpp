@@ -4,22 +4,29 @@
 #include <string>
 #include <vector>
 #include <unistd.h>
-
+#include <iomanip>
 #include "process.h"
 #include "linux_parser.h"
 
 using std::string;
 using std::to_string;
 using std::vector;
+using std::stof;
 
 // TODO: Return this process's ID
 int Process::Pid() { return pid_; }
 
 // TODO: Return this process's CPU utilization
-float Process::CpuUtilization() { return 0; }
+float Process::CpuUtilization() {
+    this->cpu_ = (float)LinuxParser::ActiveJiffies(pid_);
+    return this->cpu_; 
+}
 
 // TODO: Return the command that generated this process
-string Process::Command() { return string(); }
+string Process::Command() { 
+    std::string command = LinuxParser::Command(pid_);
+    return command;
+}
 
 // TODO: Return this process's memory utilization
 string Process::Ram() { 

@@ -102,6 +102,7 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
     mvwprintw(window, row, command_column,
               process.Command().substr(0, window->_maxx - 46).c_str());
   }
+
 }
 
 void NCursesDisplay::Display(System& system, int n) {

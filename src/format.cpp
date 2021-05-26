@@ -2,6 +2,10 @@
 #define MIN 60
 
 #include <string>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
+#include <sstream>
 
 #include "format.h"
 
@@ -13,15 +17,13 @@ using std::string;
 // REMOVE: [[maybe_unused]] once you define the function
 string Format::ElapsedTime(long time) { 
     int hour = time / HOUR;
-    int minute = (time / MIN) % MIN;
-    int second = time % MIN;
-    return std::to_string(hour) + ":" + std::to_string(minute) + ":" + std::to_string(second);
-}
+    int temp = time % HOUR;
+    int minute = temp / MIN;
+    int second = temp % MIN;
 
-// string Format::prd(const double x, const int decDigits) {
-//     std::stringstream ss = "";
-//     ss << fixed;
-//     ss.precision(decDigits); // set # places after decimal
-//     ss << x;
-//     return ss.str();
-// }
+    std::ostringstream final_time;
+    final_time << std::setw(2) << std::setfill('0') << hour << ":"
+               << std::setw(2) << std::setfill('0') << minute << ":"
+               << std::setw(2) << std::setfill('0') << second;
+    return final_time.str();
+}
