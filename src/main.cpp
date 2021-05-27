@@ -7,5 +7,5 @@ int main() {
   // for (auto proc : system.Processes()) {
   //   std::cout << proc.User() << std::endl;
   // }
-  NCursesDisplay::Display(system);
+  NCursesDisplay::Display(system, 20);
 }

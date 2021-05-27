@@ -10,46 +10,46 @@
 #include <string>
 
 // TODO: Return the aggregate CPU utilization
-float Processor::Utilization() { 
-    std::string key, user, nice, system, 
-                idle, iowait, irq, softirq, 
+double Processor::Utilization() {
+    std::string key, user, nice, system,
+                idle, iowait, irq, softirq,
                 steal, guest, guest_nice, line;
     std::ifstream filestream(LinuxParser::kProcDirectory+LinuxParser::kStatFilename);
 
-    float cpu_use = 0.0;
+    double cpu_use = 0.0;
 
     if (filestream.is_open()) {
         //int mico = 0;
         Processor::GotoLine(filestream, this->getPos());
-        filestream >> key >> user >> nice >> system >> idle >> 
+        filestream >> key >> user >> nice >> system >> idle >>
             iowait >> irq >> softirq >> steal >> guest >> guest_nice;
-        
-        float user_ = stof(user);
-        float nice_ = stof(nice);
-        float system_ = stof(system);
-        float idle_ = stof(idle);
-        float iowait_ = stof(iowait);
-        float irq_ = stof(irq);
-        float softirq_ = stof(softirq);
-        float steal_ = stof(steal);
-        // float guest_ = stof(guest);
-        // float guest_nice_ = stof(guest_nice);
 
-        float PrevIdle = this->getIdle() + this->getIowait();
-        float Idle = idle_ + iowait_;
+        double user_ = stod(user);
+        double nice_ = stod(nice);
+        double system_ = stod(system);
+        double idle_ = stod(idle);
+        double iowait_ = stod(iowait);
+        double irq_ = stod(irq);
+        double softirq_ = stod(softirq);
+        double steal_ = stod(steal);
+        // double guest_ = stof(guest);
+        // double guest_nice_ = stof(guest_nice);
+
+        double PrevIdle = this->getIdle() + this->getIowait();
+        double Idle = idle_ + iowait_;
 
 
-        float PrevNonIdle = this->getUser() + this->getNice() + this->getSystem() + this->getIrq() + this->getSoftirq() + this->getSteal();
-        float NonIdle = user_ + nice_ + system_ + irq_ + softirq_ + steal_;
+        double PrevNonIdle = this->getUser() + this->getNice() + this->getSystem() + this->getIrq() + this->getSoftirq() + this->getSteal();
+        double NonIdle = user_ + nice_ + system_ + irq_ + softirq_ + steal_;
 
-        float PrevTotal = PrevIdle + PrevNonIdle;
-        float Total = Idle + NonIdle;
+        double PrevTotal = PrevIdle + PrevNonIdle;
+        double Total = Idle + NonIdle;
 
-        float totald = Total - PrevTotal;
-        float idled = Idle - PrevIdle;
+        double totald = Total - PrevTotal;
+        double idled = Idle - PrevIdle;
 
         cpu_use = (totald - idled)/totald;
-        
+
         this->setUser(user_);
         this->setSystem(system_);
         this->setIdle(idle_);
@@ -60,31 +60,31 @@ float Processor::Utilization() {
         this->setIrq(irq_);
 
     }
-    return cpu_use; 
+    return cpu_use;
 }
 
 std::string Processor::getKey() const { return key_; }
 int Processor::getPos() const { return pos_; }
-float Processor::getUser() { return user_; }
-float Processor::getNice() { return nice_; }
-float Processor::getSystem() { return system_; }
-float Processor::getIdle() { return idle_; }
-float Processor::getIowait() { return iowait_; }
-float Processor::getIrq() { return irq_; }
-float Processor::getSoftirq() { return softirq_; }
-float Processor::getSteal() { return steal_; }
+double Processor::getUser() { return user_; }
+double Processor::getNice() { return nice_; }
+double Processor::getSystem() { return system_; }
+double Processor::getIdle() { return idle_; }
+double Processor::getIowait() { return iowait_; }
+double Processor::getIrq() { return irq_; }
+double Processor::getSoftirq() { return softirq_; }
+double Processor::getSteal() { return steal_; }
 
 
-void Processor::setUser(float u) { user_ = u; }
-void Processor::setNice(float u) { nice_ = u; }
-void Processor::setSystem(float u) { system_ = u; }
-void Processor::setIdle(float u) { idle_ = u; }
-void Processor::setIowait(float u) { iowait_ = u; }
-void Processor::setIrq(float u) { irq_ = u; }
-void Processor::setSoftirq(float u) { softirq_ = u; }
-void Processor::setSteal(float u) { steal_ = u; }
+void Processor::setUser(double u) { user_ = u; }
+void Processor::setNice(double u) { nice_ = u; }
+void Processor::setSystem(double u) { system_ = u; }
+void Processor::setIdle(double u) { idle_ = u; }
+void Processor::setIowait(double u) { iowait_ = u; }
+void Processor::setIrq(double u) { irq_ = u; }
+void Processor::setSoftirq(double u) { softirq_ = u; }
+void Processor::setSteal(double u) { steal_ = u; }
 
-std::ifstream& Processor::GotoLine(std::ifstream& file, unsigned int num){
+std::ifstream& Processor::GotoLine(std::ifstream& file, int num){
     file.seekg(std::ios::beg);
     for(int i=0; i < num - 1; ++i){
         file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');

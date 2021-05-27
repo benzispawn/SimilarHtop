@@ -35,7 +35,7 @@ std::vector<Processor>& System::Cpus() {
                   iowait >> irq >> softirq >> steal >> guest >> guest_nice) {
                 if (key.size() == 4 && key.substr(0, 3) == "cpu") {
                     Processor cpu(pos, key);
-                    this->cpus_.push_back(cpu);
+                    this->cpus_.emplace_back(cpu);
                     pos++;
                 }
             }
@@ -54,8 +54,7 @@ vector<Process>& System::Processes() {
 
     for (int pid : pids) {
         // std::cout << pid << std::endl;
-        Process tmp_process(pid);
-        this->processes_.push_back(tmp_process);
+        this->processes_.emplace_back(pid);
     }    
 
     std::sort(processes_.begin(), processes_.end());
@@ -82,7 +81,10 @@ std::string System::OperatingSystem() {
 }
 
 // TODO: Return the number of processes actively running on the system
-int System::RunningProcesses() { return 0; }
+int System::RunningProcesses() { 
+    int runningProcesses_ = LinuxParser::RunningProcesses();
+    return runningProcesses_; 
+}
 
 // TODO: Return the total number of processes on the system
 int System::TotalProcesses() {
