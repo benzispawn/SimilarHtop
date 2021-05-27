@@ -91,17 +91,33 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
   //             processes[i].Command().substr(0, window->_maxx - 46).c_str());
   // }
 
-  for (auto process : processes) {
-    mvwprintw(window, ++row, pid_column, to_string(process.Pid()).c_str());
-    mvwprintw(window, row, user_column, process.User().c_str());
-    float cpu = process.CpuUtilization() * 100;
+  //for (auto process : processes) {
+  // std::size_t qtd = 0;
+  int qtd = 0;
+  while (qtd <= n) {
+    mvwprintw(window, ++row, pid_column, to_string(processes[qtd].Pid()).c_str());
+    mvwprintw(window, row, user_column, processes[qtd].User().c_str());
+    float cpu = processes[qtd].CpuUtilization() * 100;
     mvwprintw(window, row, cpu_column, to_string(cpu).substr(0, 4).c_str());
-    mvwprintw(window, row, ram_column, process.Ram().c_str());
+    mvwprintw(window, row, ram_column, processes[qtd].Ram().c_str());
     mvwprintw(window, row, time_column,
-              Format::ElapsedTime(process.UpTime()).c_str());
+              Format::ElapsedTime(processes[qtd].UpTime()).c_str());
     mvwprintw(window, row, command_column,
-              process.Command().substr(0, window->_maxx - 46).c_str());
+              processes[qtd].Command().substr(0, window->_maxx - 46).c_str());
+    qtd++;
   }
+  // for (std::size_t i = 0; i < n; ++i)
+  //   // Process process = processes[i];
+  //   mvwprintw(window, ++row, pid_column, to_string(processes[i].Pid()).c_str());
+  //   mvwprintw(window, row, user_column, processes[i].User());
+  //   float cpu = processes.CpuUtilization() * 100;
+  //   mvwprintw(window, row, cpu_column, to_string(cpu).substr(0, 4).c_str());
+  //   mvwprintw(window, row, ram_column, processes.Ram().c_str());
+  //   mvwprintw(window, row, time_column,
+  //             Format::ElapsedTime(processes.UpTime()).c_str());
+  //   mvwprintw(window, row, command_column,
+  //             processes.Command().substr(0, window->_maxx - 46).c_str());
+  // }
 
 }
 

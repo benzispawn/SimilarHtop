@@ -176,11 +176,11 @@ double LinuxParser::ActiveJiffies(int pid) {
 
   filestream.close();
 
-  utime = std::stod(res[14]);
-  stime = std::stod(res[15]);
-  cutime = std::stod(res[16]);
-  cstime = std::stod(res[17]);
-  starttime = std::stod(res[22]);
+  utime = std::stod(res[13]);
+  stime = std::stod(res[14]);
+  cutime = std::stod(res[15]);
+  cstime = std::stod(res[16]);
+  starttime = std::stod(res[21]);
 
   double total_time = utime + stime + cutime + cstime;
 
@@ -259,7 +259,7 @@ int LinuxParser::TotalProcesses() {
           std::istringstream linestream(line);
           while(linestream >> key >> value) {
               if (key == "processes") {
-                  processes_ = stoi(value);
+                  processes_ = std::stoi(value);
                   filestream.close();
                   linestream.str("");
                   break;
@@ -283,7 +283,7 @@ int LinuxParser::RunningProcesses() {
           std::istringstream linestream(line);
           while(linestream >> key >> value) {
               if (key == "procs_running") {
-                  proc_running_ = stoi(value);
+                  proc_running_ = std::stoi(value);
                   filestream.close();
                   linestream.str("");
                   break;
@@ -409,6 +409,7 @@ std::string LinuxParser::User(int pid) {
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::UpTime(int pid) { 
   std::string time, line;
+  std::vector<std::string> res = {};
   long time1 = 0;
   int counter = 0;
   std::ifstream filestream(kProcDirectory+std::to_string(pid)+kStatFilename);
@@ -416,14 +417,14 @@ long LinuxParser::UpTime(int pid) {
       while(getline(filestream, line, ' ')) {
           counter++;
           // std::cout << line << std::endl;
-          if (counter == 22) {
-              time1 = stol(line) / sysconf(_SC_CLK_TCK);
-              filestream.close();
-              break;
+          while (std::getline(filestream, line, ' ')) {
+              res.emplace_back(line);
           }
-          
       }
   }
+
+  filestream.close();
+  time1 = stol(res[22]) / sysconf(_SC_CLK_TCK);
   // std::cout << time1 << std::endl;
   return time1;
 }
